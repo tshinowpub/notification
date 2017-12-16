@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+    notification-web:
+        container_name: notification-web
+        image: notification/web
+        build: ./web
+        depends_on:
+            - notification-db
+        volumes:
+            - ../../:/var/www/html
+        ports:
+            - '80:80'
+        networks:
+            notification:
+                ipv4_address: 172.18.0.11
+
+    notification-db:
+        container_name: notification-db
+        image: mysql:5.7
+        volumes:
+            - ./mysql/:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: notification_root
+            MYSQL_DATABASE: notification
+            MYSQL_USER: notification
+            MYSQL_PASSWORD: notification
+        networks:
+            notification:
+                ipv4_address: 172.18.0.12
+
+    notification-db-admin:
+        container_name: notification-db-admin
+        image: phpmyadmin/phpmyadmin:latest
+        depends_on:
+            - notification-db
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOSTS: notification-db
+        networks:
+            notification:
+                ipv4_address: 172.18.0.13
+
+networks:
+    notification:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.0/24
