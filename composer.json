@@ -14,6 +14,8 @@
         "symfony/yaml": "^4.0"
     },
     "require-dev": {
+        "phake/phake": "^3.0",
+        "phpunit/phpunit": "^6.5",
         "symfony/dotenv": "^4.0",
         "symfony/phpunit-bridge": "^4.0"
     },
