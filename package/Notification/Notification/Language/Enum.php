@@ -1,6 +1,8 @@
 <?php
 
-namespace Language;
+declare(strict_types = 1);
+
+namespace Notification\Notification\Language;
 
 /**
  * 列挙型
@@ -71,6 +73,17 @@ abstract class Enum
     public static function valueOf($value)
     {
         return new static($value);
+    }
+
+    /**
+     * 定数を元にオブジェクトを取得します
+     *
+     */
+    public static function __callStatic($methodName, $params)
+    {
+        $className = static::class;
+
+        return new $className(constant("$className::$methodName"));
     }
 
     /**
